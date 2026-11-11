@@ -213,6 +213,59 @@ main {
   .hamburger { display: inline-block; }
 }
 
+/* theme toggle — sits in the nav group, left of the hamburger.
+   The icon shown is the mode you'd switch to: moon in light, sun in dark. */
+.theme-toggle {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  width: 34px;
+  height: 34px;
+  margin-left: 0.55rem;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--fg4);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+.theme-toggle:hover {
+  background-color: var(--hover-bg);
+  color: var(--fg1);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--fg4);
+  outline-offset: 2px;
+}
+.theme-toggle svg {
+  grid-area: 1 / 1;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.2s ease-in-out, transform 0.25s var(--ease-out-quint);
+}
+.theme-toggle .icon-moon { opacity: 1; transform: none; }
+.theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.7); }
+:root[data-theme="dark"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.7); }
+:root[data-theme="dark"] .theme-toggle .icon-sun { opacity: 1; transform: none; }
+@media (width < 641px) {
+  .theme-toggle { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle svg { transition: opacity 0.2s ease-in-out; }
+  .theme-toggle .icon-moon,
+  .theme-toggle .icon-sun,
+  :root[data-theme="dark"] .theme-toggle .icon-moon,
+  :root[data-theme="dark"] .theme-toggle .icon-sun { transform: none; }
+}
+
 /* mobile menu */
 .mobile-menu-overlay {
   display: none;
@@ -907,7 +960,28 @@ footer#footer {
   .content table { font-size: 12px; }
 }
 
-/* ---------- 12. accessibility / motion ------------------------------------ */
+/* ---------- 12. dark theme ------------------------------------------------ */
+/* Figures ship as light plates (opaque #fff SVGs). Dim them a touch so they
+   sit calmly on the dark page instead of glaring. */
+:root[data-theme="dark"] .post-cover img,
+:root[data-theme="dark"] figure img.figure-media {
+  filter: brightness(0.9);
+}
+
+/* Brief cross-fade when the reader flips the switch; removed again by the
+   toggle script so normal hover transitions are unaffected. */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
+    transition: background-color 0.22s ease-in-out,
+      border-color 0.22s ease-in-out, color 0.22s ease-in-out,
+      fill 0.22s ease-in-out, stroke 0.22s ease-in-out !important;
+  }
+}
+
+/* ---------- 13. accessibility / motion ------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

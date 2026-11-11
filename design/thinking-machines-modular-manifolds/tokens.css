@@ -171,6 +171,74 @@
   --t-fade: opacity 0.18s ease-in-out;
 }
 
+/* ==========================================================================
+   Dark theme
+   Only colour tokens change; every rule in theme.css derives its hairlines,
+   underlines and selections from them via color-mix(), so the layout is
+   untouched. `data-theme` is set on <html> before first paint (see <head>).
+   ========================================================================== */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ---------- surfaces ------------------------------------------------ */
+  --bg: #151513;
+  --bg_s: #1b1b19;
+  --bg_h: #1b1b19;
+  --bg_code: #1e1e1b;
+  --bg1: #2a2a27;
+  --bg2: #343431;
+  --bg3: #3f3f3a;
+  --bg4: #4a4a44;
+
+  /* ---------- ink ----------------------------------------------------- */
+  --fg: #e9e7e2;
+  --fg1: #d8d5cf;
+  --fg2: #c2beb7;
+  --fg3: #a8a49d;
+  --fg4: #98948c;
+  --fg5: #6f6b65;
+  --fg_code: #a8c887;
+
+  /* ---------- accents ------------------------------------------------ */
+  --red: #e8836f;
+  --green: #b6d97a;
+  --yellow: #e5b454;
+  --blue: #57c3f2;
+  --purple: #d386b5;
+  --aqua: #7bbb8c;
+  --orange: #f0894f;
+  --gray: #a29d95;
+  --red-dim: #d96b57;
+  --green-dim: #a8c95f;
+  --yellow-dim: #d9a63f;
+  --blue-dim: #4f9fb8;
+  --purple-dim: #c47aa6;
+  --aqua-dim: #6fa87c;
+  --orange-dim: #e07640;
+  --gray-dim: #a29d95;
+
+  /* ---------- syntax highlighting ------------------------------------ */
+  --code-red: #ff7b72;
+  --code-blue: #6cb6ff;
+  --code-green: #a5d36b;
+  --code-magenta: #f07ec0;
+  --code-comment: #8b949e;
+  --code-namespace: #e0a3b8;
+  --code-yellow: #e3b341;
+  --code-aqua: #56d4dd;
+  --code-orange: #ff9b8a;
+  --code-gray: #9aa4b2;
+  --code-purple: var(--code-blue);
+
+  /* ---------- interaction -------------------------------------------- */
+  --hover-bg: rgba(233, 231, 226, 0.08);
+  --selection-bg: rgba(233, 231, 226, 0.18);
+  --rule-table: #2f2f2c;
+
+  /* ---------- elevation ---------------------------------------------- */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
 /* Post shell widens with the viewport; the reading column never does. */
 @media (min-width: 1200px) { :root { --post-max-width: 970px;  --sidenote-width: 240px; } }
 @media (min-width: 1400px) { :root { --post-max-width: 990px;  --sidenote-width: 250px; } }
