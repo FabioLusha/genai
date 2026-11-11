@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}} — Thinking Machines Lab</title>
+  <meta name="description" content="{{description}}">
+  <meta name="author" content="{{author}}">
+
+  <!-- design system -->
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="theme.css">
+
+  <!-- math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+          });"></script>
+</head>
+
+<body id="top">
+  <div id="wrapper">
+
+    <!-- ============================== header ============================== -->
+    <header id="header">
+      <div id="site-header" class="site-header">
+        <div class="navbar-logo"><a href="/">THINKING MACHINES</a></div>
+        <div class="nav-group">
+          <nav class="top-nav" aria-label="Primary">{{nav_links}}</nav>
+          <button class="hamburger" type="button" aria-label="Open menu"
+                  aria-expanded="false" aria-controls="mobile-menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="mobile-menu-overlay">
+        <nav class="mobile-menu-nav" aria-label="Mobile">{{mobile_links}}</nav>
+      </div>
+    </header>
+
+    <!-- =============================== post =============================== -->
+    <main id="main" class="post">
+
+      <!-- title / byline -->
+      <div class="post-heading">
+        <h1 class="typography post-title" data-typography="article-title">{{title}}</h1>
+        {{subtitle}}
+        <div class="publish-metadata">
+          <span class="author">{{author_link}}</span>
+          <span>{{date}}</span>
+        </div>
+      </div>
+
+      <!-- cover art -->
+      {{cover}}
+
+      <!-- text + left toc -->
+      <div class="post-content-shell">
+        <nav id="left-toc" class="left-toc" aria-label="Table of contents">
+          <span class="toc-active-marker" aria-hidden="true"></span>
+          <ul class="toc-list">{{toc}}</ul>
+        </nav>
+        <article class="content">{{body}}</article>
+      </div>
+
+      <!-- prev / back to top / next -->
+      <div class="paginator">
+        {{prev_link}}
+        <a href="#top">back to top</a>
+        {{next_link}}
+      </div>
+    </main>
+
+    <!-- ============================== footer ============================== -->
+    <footer id="footer">
+      <div class="footer-columns">
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Models</h4>
+            <ul>
+              <li><a href="/inkling/"><span class="typography" data-typography="body-legacy">Inkling</span></a></li>
+              <li><a href="/inkling/"><span class="typography" data-typography="body-legacy">Inkling 2 Small</span></a></li>
+              <li><a href="/tinker/"><span class="typography" data-typography="body-legacy">Interaction</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Tinker</h4>
+            <ul>
+              <li><a href="/tinker/"><span class="typography" data-typography="body-legacy">Overview</span></a></li>
+              <li><a href="/tinker/docs/"><span class="typography" data-typography="body-legacy">Docs</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Company</h4>
+            <ul>
+              <li><a href="/#about"><span class="typography" data-typography="body-legacy">About</span></a></li>
+              <li><a href="/blog/"><span class="typography" data-typography="body-legacy">Connectionism</span></a></li>
+              <li><a href="/news/"><span class="typography" data-typography="body-legacy">News</span></a></li>
+              <li><a href="/careers/"><span class="typography" data-typography="body-legacy">Careers</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Legal</h4>
+            <ul>
+              <li><a href="/legal/terms/"><span class="typography" data-typography="body-legacy">Terms of service</span></a></li>
+              <li><a href="/legal/privacy/"><span class="typography" data-typography="body-legacy">Privacy notice</span></a></li>
+            </ul>
+            <h4 class="typography footer-subheading" data-typography="body-legacy">Security</h4>
+            <ul>
+              <li><a href="/security/disclosure-policy/"><span class="typography" data-typography="body-legacy">Disclosure policy</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Connect</h4>
+            <ul>
+              <li><a href="https://x.com/thinkymachines"><span class="typography" data-typography="body-legacy">X</span></a></li>
+              <li><a href="https://www.linkedin.com/company/thinking-machines-lab/"><span class="typography" data-typography="body-legacy">LinkedIn</span></a></li>
+              <li><a href="https://www.youtube.com/@thinkingmachines"><span class="typography" data-typography="body-legacy">YouTube</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <span class="typography" data-typography="body-legacy">Thinking Machines Lab © 2026</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // scroll-spy: mirrors the original page's active-dot behaviour in the left rail
+    (function () {
+      var nav = document.getElementById('left-toc');
+      if (!nav) return;
+      var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+      var heads = links
+        .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+        .filter(Boolean);
+      if (!heads.length) return;
+
+      function sync() {
+        var y = window.scrollY + 140;
+        var current = heads[0];
+        heads.forEach(function (h) { if (h.offsetTop <= y) current = h; });
+        links.forEach(function (a) {
+          var on = a.getAttribute('href') === '#' + current.id;
+          a.classList.toggle('is-active', on);
+          if (on) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+        var active = nav.querySelector('a.is-active');
+        if (active) {
+          nav.classList.add('has-active-marker');
+          nav.style.setProperty('--toc-active-marker-y', (active.offsetTop + active.offsetHeight / 2) + 'px');
+        }
+      }
+      sync();
+      window.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+    })();
+
+    // mobile menu only — the rest of the page is static
+    (function () {
+      var btn = document.querySelector('.hamburger');
+      var menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        btn.classList.toggle('is-active', !open);
+        menu.dataset.open = String(!open);
+      });
+    })();
+  </script>
+</body>
+</html>

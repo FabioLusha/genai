@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Style — a specimen in its own design</title>
+  <meta name="description" content="The Thinking Machines essay design language, demonstrated in the design itself.">
+
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="theme.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {
+            delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+          });"></script>
+
+  <!-- specimen-only helpers; the design system itself lives in theme.css -->
+  <style>
+    /* --- specimen scaffolding (never used in a real essay) --------------- */
+    #main.post article.content .sg-note {
+      font: 400 13px/1.5 var(--font-sans);
+      color: var(--fg3);
+      margin: -0.4rem 0 1.6rem;
+    }
+    #main.post article.content .sg-kicker {
+      font: 400 11px/1.4 var(--font-sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg5);
+      margin: 1.6rem 0 0.35rem;
+    }
+    #main.post article.content .sg-kicker:first-of-type { margin-top: 0.6rem; }
+    .sg-spec {
+      border-top: 1px solid var(--rule-table);
+      padding: 1.1rem 0 1.2rem;
+    }
+    .sg-spec:first-of-type { border-top: 0; padding-top: 0; }
+    .sg-spec > :is(h1, h2, h3, h4, h5, h6) { margin: 0 !important; }
+    .sg-spec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      font: 400 11px/1.4 var(--font-mono);
+      color: var(--fg5);
+    }
+    .sg-spec-head b {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    /* --- type families --------------------------------------------------- */
+    .sg-family { border-top: 1px solid var(--rule-table); padding: 1.1rem 0; }
+    .sg-family:first-of-type { border-top: 0; }
+    #main.post article.content .sg-family { margin: 0; }
+    #main.post article.content .sg-family-sample { margin: 0.6rem 0 0.3rem; }
+    #main.post article.content .sg-family-role { margin: 0; }
+    .sg-family-name {
+      font: 400 15px/1.4 var(--font-sans);
+      color: var(--fg);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .sg-family-name span:last-child { color: var(--fg5); font-size: 12px; }
+    .sg-family-sample {
+      font-size: 30px;
+      line-height: 1.25;
+      color: var(--fg);
+    }
+    .sg-family-role {
+      font: 400 12px/1.5 var(--font-sans);
+      color: var(--fg4);
+    }
+
+    /* --- swatches --------------------------------------------------------- */
+    .sg-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+      gap: 1.1rem 1.2rem;
+      margin: 1.2rem 0 1.6rem;
+    }
+    .sg-swatch { margin: 0; }
+    .sg-chip {
+      height: 58px;
+      border: 1px solid rgba(40, 40, 40, 0.12);
+      background: var(--swatch, #fff);
+    }
+    .sg-chip.is-checked {
+      background-image:
+        linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%),
+        linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 6px 6px;
+    }
+    .sg-swatch-name {
+      font: 400 13px/1.35 var(--font-sans);
+      color: var(--fg);
+      margin-top: 0.45rem;
+    }
+    .sg-swatch-hex {
+      font: 400 11px/1.4 var(--font-mono);
+      color: var(--fg5);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .sg-swatch-role {
+      font: 400 11px/1.4 var(--font-sans);
+      color: var(--fg4);
+      margin-top: 0.15rem;
+    }
+    .sg-section-note {
+      font: 400 12px/1.5 var(--font-sans);
+      color: var(--fg4);
+      margin: 0.2rem 0 0;
+    }
+
+    /* --- tables ------------------------------------------------------------ */
+    /* the generic grid variant from the source CSS, kept for data tables */
+    #main.post article.content table.sg-grid {
+      border-collapse: collapse;
+    }
+    #main.post article.content table.sg-grid th,
+    #main.post article.content table.sg-grid td {
+      border: 1px solid var(--fg4);
+      padding: 0.55rem 0.7rem;
+      text-align: left;
+    }
+    #main.post article.content table.sg-grid th {
+      background: var(--bg_code);
+      font-weight: 700;
+      color: var(--fg);
+    }
+    #main.post article.content table.sg-grid tr:last-child td { border-bottom: 1px solid var(--fg4); }
+
+    /* --- layout diagram ---------------------------------------------------- */
+    .sg-diagram {
+      margin: 1.4rem 0 1.8rem;
+      font: 400 11px/1.4 var(--font-sans);
+      color: var(--fg4);
+    }
+    .sg-diagram-frame {
+      display: grid;
+      grid-template-columns: 210fr 660fr 230fr;
+      gap: 6px;
+      align-items: stretch;
+      border: 1px solid var(--rule-table);
+      padding: 6px;
+      background: var(--bg);
+    }
+    .sg-diagram-cell {
+      border: 1px solid var(--rule-table);
+      min-height: 150px;
+      padding: 0.6rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: center;
+    }
+    .sg-diagram-cell.is-article {
+      background: var(--bg_code);
+      align-items: center;
+      font-family: var(--font-serif);
+      font-size: 13px;
+      color: var(--fg2);
+    }
+    .sg-diagram-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--fg5);
+    }
+
+    /* --- component demos --------------------------------------------------- */
+    .sg-demo {
+      border: 1px solid var(--rule-table);
+      padding: 1rem 1.15rem;
+      margin: 1rem 0 1.4rem;
+    }
+    .sg-demo + .sg-demo { margin-top: -0.4rem; }
+    .sg-demo-label {
+      font: 400 10px/1.4 var(--font-sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg5);
+      margin: 0 0 0.6rem;
+    }
+    .sg-force-hover { color: var(--fg2) !important; text-decoration-color: var(--underline-strong) !important; }
+    .sg-anchor-visible { opacity: 1 !important; }
+    .sg-paginator-demo {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--fg4);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+    }
+    .sg-paginator-demo span:first-child { text-align: left; }
+    .sg-paginator-demo span:last-child { text-align: right; }
+
+    /* --- rules -------------------------------------------------------------- */
+    #main.post article.content ul.sg-rules {
+      list-style: none;
+      margin: 1.2rem 0 1.8rem;
+      padding: 0;
+    }
+    .sg-rules li {
+      border-top: 1px solid var(--rule-table);
+      padding: 0.85rem 0;
+      display: grid;
+      grid-template-columns: 4.5rem 1fr;
+      gap: 1rem;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .sg-rules li:last-child { border-bottom: 1px solid var(--rule-table); }
+    .sg-rules b {
+      font: 400 10px/1.6 var(--font-sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg5);
+      padding-top: 0.25rem;
+    }
+    .sg-rules .is-do b { color: var(--brand-emerald); }
+    .sg-rules .is-dont b { color: var(--brand-red); }
+
+    /* keep specimen headings out of the page's own section rhythm */
+    .sg-inline-code { white-space: nowrap; }
+  </style>
+</head>
+
+<body id="top">
+  <div id="wrapper">
+
+    <header id="header">
+      <div id="site-header" class="site-header">
+        <div class="navbar-logo"><a href="index.html">THINKING MACHINES</a></div>
+        <div class="nav-group">
+          <nav class="top-nav" aria-label="Primary">
+            <a href="index.html"><span class="typography" data-typography="body-legacy">The essay</span></a>
+            <a href="#type"><span class="typography" data-typography="body-legacy">Type</span></a>
+            <a href="#colour"><span class="typography" data-typography="body-legacy">Colour</span></a>
+            <a href="#tables"><span class="typography" data-typography="body-legacy">Tables</span></a>
+            <a href="#components"><span class="typography" data-typography="body-legacy">Components</span></a>
+          </nav>
+          <button class="hamburger" type="button" aria-label="Open menu"
+                  aria-expanded="false" aria-controls="mobile-menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="mobile-menu-overlay">
+        <nav class="mobile-menu-nav" aria-label="Mobile">
+          <a href="index.html">The essay</a>
+          <a href="#type">Type</a>
+          <a href="#colour">Colour</a>
+          <a href="#tables">Tables</a>
+          <a href="#components">Components</a>
+          <a href="#layout">Layout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="post">
+
+      <div class="post-heading">
+        <h1 class="typography post-title" data-typography="article-title">The House Style</h1>
+        <p class="typography post-subtitle">A specimen of the essay design — set in the design itself.</p>
+        <div class="publish-metadata">
+          <span class="author">Thinking Machines Lab</span>
+          <span>Specimen · Nov 2026</span>
+        </div>
+      </div>
+
+      <div class="post-content-shell">
+        <nav id="left-toc" class="left-toc" aria-label="Contents">
+          <span class="toc-active-marker" aria-hidden="true"></span>
+          <ul class="toc-list">
+            <li class="toc-item"><a href="#type">Typography</a></li>
+            <li class="toc-item"><a href="#colour">Colour</a></li>
+            <li class="toc-item"><a href="#tables">Tables</a></li>
+            <li class="toc-item"><a href="#figures">Figures &amp; code</a></li>
+            <li class="toc-item"><a href="#components">Components</a></li>
+            <li class="toc-item"><a href="#layout">Layout &amp; rhythm</a></li>
+            <li class="toc-item"><a href="#motion">Motion</a></li>
+            <li class="toc-item"><a href="#rules">Rules of the house</a></li>
+          </ul>
+        </nav>
+
+        <article class="content">
+
+          <p class="typography" data-typography="article-body">This page is the design language explaining itself. Every heading, paragraph, table, swatch and note below is rendered with the same stylesheet as the essay — nothing here is a screenshot, and nothing is a special case. If a specimen looks right, the same markup will look right in a post.</p>
+
+          <p class="typography" data-typography="article-body">The premise is simple: an academic paper rendered as a web essay. Prose is set in a book serif at a comfortable 17&nbsp;px; every piece of apparatus — byline, captions, tables, contents, footer — is a quiet grotesque. Colour is almost entirely absent. Structure comes from one narrow column, generous space above headings, and hairlines rather than boxes.</p>
+
+          <!-- ============================ TYPOGRAPHY ============================ -->
+          <h2 id="type" class="typography" data-typography="article-heading">Typography</h2>
+
+          <p class="typography" data-typography="article-body">Four families do all the work: two carry the voice, one carries data, and one appears exactly once. The contrast between the serif and the sans is the signature of the system — reading text is serif, apparatus is sans.</p>
+
+          <div class="sg-family">
+            <div class="sg-family-name">
+              <span>Iowan Old Style</span>
+              <span>regular 400 · bold 700</span>
+            </div>
+            <p class="sg-family-sample" style="font-family: var(--font-serif)">Manifolds, optimizers, and the shape of a step</p>
+            <p class="sg-family-role">Reading text. Every paragraph, heading, caption body, quote and inline quotation. Fallback: Georgia, serif.</p>
+          </div>
+
+          <div class="sg-family">
+            <div class="sg-family-name">
+              <span>GT America</span>
+              <span>regular 400</span>
+            </div>
+            <p class="sg-family-sample" style="font-family: var(--font-sans); font-size: 22px; letter-spacing: -0.01em">Metadata, navigation, captions, tables, footer</p>
+            <p class="sg-family-role">All apparatus. 15&nbsp;px for chrome, 13&nbsp;px for captions and tables. Never used for prose.</p>
+          </div>
+
+          <div class="sg-family">
+            <div class="sg-family-name">
+              <span>GT America Mono</span>
+              <span>regular 400</span>
+            </div>
+            <p class="sg-family-sample" style="font-family: var(--font-mono); font-size: 20px">w ← w − η · u</p>
+            <p class="sg-family-role">Code only: inline snippets at 0.9&nbsp;em, code blocks at 13&nbsp;px/1.4.</p>
+          </div>
+
+          <div class="sg-family">
+            <div class="sg-family-name">
+              <span>Chakra Petch</span>
+              <span>medium 500 · +1.7&nbsp;px</span>
+            </div>
+            <p class="sg-family-sample" style="font-family: var(--font-logo); font-size: 17px; font-weight: 500; letter-spacing: 1.7px; line-height: 25px">THINKING MACHINES</p>
+            <p class="sg-family-role">The wordmark, once, in the header. Nothing else.</p>
+          </div>
+
+          <h3 id="type-scale" class="typography" data-typography="article-subheading">The scale</h3>
+
+          <p class="typography" data-typography="article-body">Sizes are few and deliberate. Headings are sentence case, never letterspaced, and space above a heading is roughly three times the space below it — a heading belongs to what follows.</p>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>h1 · article title</span><span>serif · 30 / 1.4 · 600</span></div>
+            <h1 class="typography" data-typography="article-title">A single idea, stated plainly</h1>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>h2 · section</span><span>serif · 23.2 / 1.4 · 600</span></div>
+            <h2 class="typography" data-typography="article-heading">Manifold constraints as architecture</h2>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>h3 · subsection</span><span>serif italic · 21.6 / 1.4 · 400</span></div>
+            <h3 class="typography" data-typography="article-subheading">Why the tangent space matters</h3>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>h4 · sub-subsection</span><span>serif italic · 15.5 / 1.4 · 400</span></div>
+            <h4 class="typography" data-typography="article-body" style="font-size: var(--type-h4); font-style: italic; line-height: 1.4; margin: 0">A note on notation</h4>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>h5 / h6</span><span>rare · inherits h4</span></div>
+            <h5 class="typography" data-typography="article-body" style="font-size: var(--type-h4); font-style: italic; line-height: 1.4; margin: 0">Fifth level, used sparingly</h5>
+            <h6 class="typography" data-typography="article-body" style="font-size: var(--type-h4); font-style: italic; line-height: 1.4; margin: 0.35rem 0 0">Sixth level, almost never</h6>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>body</span><span>serif · 17 / 1.6 · 400</span></div>
+            <p class="typography" data-typography="article-body" style="margin: 0">When we train large neural networks we need to keep them healthy: weights, activations and gradients should neither explode nor collapse. This paragraph is the measure — 660&nbsp;px, roughly 70 characters, with a bottom margin of 1.45&nbsp;rem.</p>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>byline / date</span><span>sans · 15 / 21 · +0.24px</span></div>
+            <p class="typography" data-typography="article-body" style="font-family: var(--font-sans); font-size: 15px; line-height: 21px; letter-spacing: 0.24px; margin: 0">Jeremy Bernstein</p>
+            <p class="typography" data-typography="article-body" style="font-family: var(--font-sans); font-size: 15px; line-height: 17px; color: var(--fg3); margin: 0">Sep 26, 2025</p>
+          </div>
+
+          <div class="sg-spec">
+            <div class="sg-spec-head"><span>caption / table / toc</span><span>sans · 13 / 1.4–1.5 · 400</span></div>
+            <p class="typography" data-typography="article-body" style="font-family: var(--font-sans); font-size: 13px; line-height: 1.4; color: var(--fg3); margin: 0">The singular value decomposition. A matrix of rank <span class="katex-inline">$k$</span> can always be decomposed as $M = U\Sigma V^\top$.</p>
+          </div>
+
+          <h3 id="type-inline" class="typography" data-typography="article-subheading">Inside a paragraph</h3>
+
+          <p class="typography" data-typography="article-body">Inline emphasis is restrained. <strong>Bold marks a term being defined</strong> and is never used for shouting. <em>Italics carry the title of a work or a technical phrase.</em> A <a href="#components">link</a> is the same ink as the muted text with a 30&nbsp;% underline, and darkens on hover. Inline code looks like <code>optimizer.step()</code> — mono at 0.9&nbsp;em in a muted red, with no background. A footnote marker arrives as a small raised digit,<label class="sidenote-number" for="sn-spec"></label><input type="checkbox" id="sn-spec" class="margin-toggle"><span class="sidenote">Like this one: the note lives in the right margin, in 0.9&nbsp;rem serif, numbered once and never repeated.</span> and mathematics sits inline as $w \in \mathbb{R}^{d}$ without disturbing the line.</p>
+
+          <p class="typography" data-typography="article-body">A display equation is centred, unscaled, and given its own breathing room: it is the only element allowed to interrupt the vertical rhythm.</p>
+
+          <div class="math-display">$$
+            a_\mathrm{opt} = - \eta \times \frac{g - w w^\top g}{\lVert g - w w^\top g \rVert_2}.
+          $$</div>
+
+          <h3 id="type-lists" class="typography" data-typography="article-subheading">Lists</h3>
+
+          <p class="typography" data-typography="article-body">Lists are square-bulleted, tight, and lead with a bold phrase when the items are parallel claims:</p>
+
+          <ul>
+            <li class="typography" data-typography="article-body"><strong>Modularity.</strong> Constraints can be mixed and matched across layers.</li>
+            <li class="typography" data-typography="article-body"><strong>Numerics.</strong> A constraint also constrains the range of each weight entry.</li>
+            <li class="typography" data-typography="article-body"><strong>Geometry.</strong> Operator norms do not always come from inner products.</li>
+          </ul>
+
+          <p class="typography" data-typography="article-body">Ordered lists are used for procedures, and nest with lower-alpha labels:</p>
+
+          <ol>
+            <li class="typography" data-typography="article-body">Find the tangent vector of unit length that goes furthest in the gradient direction.</li>
+            <li class="typography" data-typography="article-body">Multiply by the learning rate and subtract from the weights.
+              <ol>
+                <li class="typography" data-typography="article-body">Measure length in the chosen norm.</li>
+                <li class="typography" data-typography="article-body">Project the result back onto the manifold.</li>
+              </ol>
+            </li>
+            <li class="typography" data-typography="article-body">Retract the updated weights.</li>
+          </ol>
+
+          <h3 id="type-quotes" class="typography" data-typography="article-subheading">Quotation</h3>
+
+          <p class="typography" data-typography="article-body">A blockquote is a 2&nbsp;px rule and an inset, never a coloured panel:</p>
+
+          <blockquote>
+            <p class="typography" data-typography="article-body" style="margin: 0">The reason to take steps in the tangent space is that we would like to equate the learning rate with the actual length of the optimization step.</p>
+          </blockquote>
+
+          <p class="typography" data-typography="article-body">An epigraph is the same idea, italic, with a heavier rule and no quotation marks:</p>
+
+          <blockquote class="epigraph">
+            <p class="typography" data-typography="article-body" style="margin: 0">A manifold is a curved surface that looks flat when you zoom in close enough.</p>
+          </blockquote>
+
+          <!-- ============================== COLOUR ============================== -->
+          <h2 id="colour" class="typography" data-typography="article-heading">Colour</h2>
+
+          <p class="typography" data-typography="article-body">The reading experience is grayscale. Depth comes from white paper, one off-white surface for code, and hairlines. The ink ramp below is ordered by strength and is the entire text palette.</p>
+
+          <p class="sg-kicker">Ink</p>
+          <div class="sg-swatches">
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink</div><div class="sg-swatch-hex">#282828</div><div class="sg-swatch-role">body, active</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg1)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink 1</div><div class="sg-swatch-hex">#3C3836</div><div class="sg-swatch-role">nav, footer</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg2)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink 2</div><div class="sg-swatch-hex">#504945</div><div class="sg-swatch-role">quotes, hover</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg3)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink 3</div><div class="sg-swatch-hex">#6B6866</div><div class="sg-swatch-role">captions</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg4)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink 4</div><div class="sg-swatch-hex">#676767</div><div class="sg-swatch-role">links, toc</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--fg5)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Ink 5</div><div class="sg-swatch-hex">#969696</div><div class="sg-swatch-role">disabled</div></div></div>
+          </div>
+
+          <p class="sg-kicker">Paper &amp; rules</p>
+          <div class="sg-swatches">
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--bg)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Paper</div><div class="sg-swatch-hex">#FFFFFF</div><div class="sg-swatch-role">page</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--bg_code)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Code</div><div class="sg-swatch-hex">#F3F3F2</div><div class="sg-swatch-role">code only</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #D9D9D9"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Table rule</div><div class="sg-swatch-hex">#D9D9D9</div><div class="sg-swatch-role">row rules</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: rgba(103,103,103,.3)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Underline</div><div class="sg-swatch-hex">#676767 30%</div><div class="sg-swatch-role">links</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: rgba(0,0,0,.12)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Selection</div><div class="sg-swatch-hex">#000000 12%</div><div class="sg-swatch-role">text selection</div></div></div>
+          </div>
+
+          <p class="sg-kicker">Brand accents — figures, charts, rarely anything else</p>
+          <div class="sg-swatches">
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-cobalt)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Cobalt</div><div class="sg-swatch-hex">#0155BF</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-azure)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Azure</div><div class="sg-swatch-hex">#0387E7</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-emerald)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Emerald</div><div class="sg-swatch-hex">#0E9972</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-lime)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Lime</div><div class="sg-swatch-hex">#9CC355</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-yellow)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Yellow</div><div class="sg-swatch-hex">#FFCE52</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-amber)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Amber</div><div class="sg-swatch-hex">#F7A224</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-red)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Red</div><div class="sg-swatch-hex">#EF402C</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: var(--brand-black)"></div><div class="sg-swatch-body"><div class="sg-swatch-name">Black</div><div class="sg-swatch-hex">#000000</div></div></div>
+          </div>
+
+          <p class="sg-kicker">Syntax</p>
+          <div class="sg-swatches">
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #CB071D"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#CB071D</div><div class="sg-swatch-role">keyword</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #0277AA"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#0277AA</div><div class="sg-swatch-role">function</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #7EAC21"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#7EAC21</div><div class="sg-swatch-role">string</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #AE166B"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#AE166B</div><div class="sg-swatch-role">number</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #6F7D8D"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#6F7D8D</div><div class="sg-swatch-role">comment</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #A47D00"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#A47D00</div><div class="sg-swatch-role">type</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #1B8EA6"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#1B8EA6</div><div class="sg-swatch-role">constant</div></div></div>
+            <div class="sg-swatch"><div class="sg-chip" style="--swatch: #C44D5A"></div><div class="sg-swatch-body"><div class="sg-swatch-hex">#C44D5A</div><div class="sg-swatch-role">operator</div></div></div>
+          </div>
+
+          <p class="sg-note">Accents appear inside authored figures and syntax highlighting. They are never used for headings, links, buttons, callouts or backgrounds — the only exception is the red of inline <code>code</code>, which is a syntax colour.</p>
+
+          <!-- =============================== TABLES ============================== -->
+          <h2 id="tables" class="typography" data-typography="article-heading">Tables</h2>
+
+          <p class="typography" data-typography="article-body">The essay table is not a grid. It reads as rows of text separated by hairlines: no vertical rules, no header fill, a muted regular header, and a single hairline under every row but the last. It uses the sans at caption size so it stays subordinate to the prose.</p>
+
+          <table>
+            <thead>
+              <tr><th>Manifold</th><th>Norm</th><th>Optimizer</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Euclidean $\mathbb{R}^n$</td><td>Euclidean norm</td><td>vanilla gradient descent</td></tr>
+              <tr><td>Euclidean $\mathbb{R}^n$</td><td>infinity norm</td><td>sign gradient descent</td></tr>
+              <tr><td>hypersphere $S^n$</td><td>Euclidean norm</td><td>hyperspherical descent</td></tr>
+              <tr><td>matrix space $\mathbb{R}^{m\times n}$</td><td>spectral norm</td><td>Muon</td></tr>
+              <tr><td>Stiefel manifold $\subset\mathbb{R}^{m\times n}$</td><td>spectral norm</td><td>manifold Muon</td></tr>
+            </tbody>
+          </table>
+
+          <p class="sg-note">The default table: 13&nbsp;px sans, header in ink&nbsp;3 at weight 400, 1&nbsp;px #D9D9D9 rules, 0.78&nbsp;rem × 1.25&nbsp;rem cells.</p>
+
+          <p class="typography" data-typography="article-body">For dense numeric comparison the source also defines a bordered, zebra-free grid. It is used sparingly, for data rather than for arguments:</p>
+
+          <table class="sg-grid">
+            <thead>
+              <tr><th>Setting</th><th>Block</th><th>Params</th><th>Tokens</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Inkling</td><td>dense</td><td>3.7&nbsp;B</td><td>64&nbsp;k</td></tr>
+              <tr><td>Inkling 2 Small</td><td>MoE</td><td>1.2&nbsp;B</td><td>32&nbsp;k</td></tr>
+              <tr><td>Reference</td><td>dense</td><td>8.0&nbsp;B</td><td>128&nbsp;k</td></tr>
+            </tbody>
+          </table>
+
+          <p class="sg-note">The data variant: 1&nbsp;px rules on all sides, header on the code surface. Never combine it with the hairline variant on one page.</p>
+
+          <!-- ============================ FIGURES & CODE ========================= -->
+          <h2 id="figures" class="typography" data-typography="article-heading">Figures &amp; code</h2>
+
+          <p class="typography" data-typography="article-body">A figure is full-measure, centred, unframed, and captioned underneath in 13&nbsp;px sans. Captions are numbered automatically; the number is 500 weight and the rest is 400. Nothing gets a border, a shadow, or a rounded corner.</p>
+
+          <figure>
+            <div class="figure-media" role="img" aria-label="placeholder figure" style="aspect-ratio: 16 / 7; background: var(--bg_code); display:flex; align-items:center; justify-content:center; font: 400 13px/1.4 var(--font-sans); color: var(--fg5); letter-spacing:.02em">figure area · 16 : 7</div>
+            <figcaption>The singular value decomposition. A matrix $M\in\mathbb{R}^{m\times n}$ of rank $k$ can be decomposed as $M = U\Sigma V^\top$, with orthonormal columns in $U$ and $V$ and positive singular values on the diagonal of $\Sigma$.</figcaption>
+          </figure>
+
+          <p class="typography" data-typography="article-body">Code is the one place where a filled surface is allowed. Blocks are 13&nbsp;px mono in a muted ink on #F3F3F2, with an optional language chip. Inline snippets stay transparent.</p>
+
+          <pre><code data-lang="python"><span style="color:var(--code-comment)"># map the gradient back to the tangent space</span>
+<span style="color:var(--code-red)">def</span> <span style="color:var(--code-blue)">retract</span>(w, g, eta):
+    direction = g - (w @ g) * w
+    direction = direction / direction.norm()
+    <span style="color:var(--code-red)">return</span> (w - eta * direction).normalize()</code></pre>
+
+          <p class="sg-note">Plain text is the default; pass <code>data-lang</code> to name a language. There is no copy button in the static template.</p>
+
+          <!-- ============================= COMPONENTS ============================ -->
+          <h2 id="components" class="typography" data-typography="article-heading">Components</h2>
+
+          <p class="typography" data-typography="article-body">The interface is deliberately thin. There are no buttons, no cards, no badges and no callouts. What exists is described below, and every example is live.</p>
+
+          <div class="sg-demo">
+            <p class="sg-demo-label">Links — rest and hover</p>
+            <p class="typography" data-typography="article-body" style="margin: 0">A <a href="#components">link at rest</a> is muted ink with a faint underline. <a href="#components" class="sg-force-hover">The same link in its hover state</a> darkens to ink&nbsp;2 and the rule strengthens. Nothing moves, nothing colours.</p>
+          </div>
+
+          <div class="sg-demo">
+            <p class="sg-demo-label">Heading anchor — hover only</p>
+            <h3 class="typography" data-typography="article-subheading" style="margin: 0; position: relative; font-size: 1.1rem">
+              <a class="heading-anchor sg-anchor-visible" href="#components" aria-hidden="true">#</a>
+              The hash appears on hover
+            </h3>
+            <p class="typography" data-typography="article-body" style="margin: 0.6rem 0 0; font-size: 15px">In a real post it sits at zero opacity, 1.2&nbsp;rem to the left of the heading, and fades in over 0.15&nbsp;s.</p>
+          </div>
+
+          <div class="sg-demo">
+            <p class="sg-demo-label">Paginator — three columns</p>
+            <div class="sg-paginator-demo"><span>prev</span><span>back to top</span><span>next</span></div>
+          </div>
+
+          <div class="sg-demo">
+            <p class="sg-demo-label">Table of contents — active state</p>
+            <p class="typography" data-typography="article-body" style="font-family: var(--font-sans); font-size: 13px; line-height: 1.4; margin: 0">
+              <span style="color: var(--fg)">● &nbsp;An active section</span><br>
+              <span style="color: var(--fg4); padding-left: 1.1rem">A sibling section</span><br>
+              <span style="color: var(--fg4); padding-left: 1.1rem">Another sibling</span>
+            </p>
+          </div>
+
+          <p class="typography" data-typography="article-body">Marginalia are not a component you place — they are a note you attach. The number increments automatically and the note floats into the right rail, aligning with the line that cites it.<label class="sidenote-number" for="sn-spec-2"></label><input type="checkbox" id="sn-spec-2" class="margin-toggle"><span class="sidenote">Below 768&nbsp;px the note hides and the number becomes a tap target.</span></p>
+
+          <div class="sg-demo">
+            <p class="sg-demo-label">Header, footer, title block</p>
+            <p class="typography" data-typography="article-body" style="margin: 0">Those are not reproduced in miniature — they are this page. The bar above is the header, the block at the top is the title/byline pattern, and the footer below is the footer. The reading rail at the left is the table of contents.</p>
+          </div>
+
+          <!-- ========================== LAYOUT & RHYTHM ========================== -->
+          <h2 id="layout" class="typography" data-typography="article-heading">Layout &amp; rhythm</h2>
+
+          <p class="typography" data-typography="article-body">The page is three tracks inside a shell that widens with the viewport while the text stays fixed at 660&nbsp;px. The rails are for contents and marginalia, never for content.</p>
+
+          <div class="sg-diagram">
+            <div class="sg-diagram-frame">
+              <div class="sg-diagram-cell"><span>contents<br>210 + 34&nbsp;gap</span></div>
+              <div class="sg-diagram-cell is-article"><span>article<br>660&nbsp;px<br><br>the only track text may occupy</span></div>
+              <div class="sg-diagram-cell"><span>marginalia<br>230 → 300&nbsp;px</span></div>
+            </div>
+            <div class="sg-diagram-legend">
+              <span>shell 950 → 1030&nbsp;px</span>
+              <span>gutters 1&nbsp;rem</span>
+              <span>header 54&nbsp;px</span>
+            </div>
+          </div>
+
+          <p class="typography" data-typography="article-body">Vertical rhythm is asymmetric: the gap above a heading is roughly three times the gap below it, so headings attach to what follows. The table below is itself set in the house style.</p>
+
+          <table>
+            <thead>
+              <tr><th>Relation</th><th>Space</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>paragraph → paragraph</td><td>1.45&nbsp;rem</td><td>constant, no first-line indent</td></tr>
+              <tr><td>h2 above / below</td><td>3.1 / 1.2&nbsp;rem</td><td>tightens to 0.8&nbsp;rem after a list</td></tr>
+              <tr><td>h3 above / below</td><td>2.8 / 1.05&nbsp;rem</td><td>tightens to 0.85 under an h2</td></tr>
+              <tr><td>h4 above / below</td><td>2.2 / 0.8&nbsp;rem</td><td>italic, same size as small text</td></tr>
+              <tr><td>figure margin</td><td>1.8&nbsp;rem</td><td>caption 13&nbsp;px below</td></tr>
+              <tr><td>footer above</td><td>9&nbsp;rem</td><td>the only large void on the page</td></tr>
+            </tbody>
+          </table>
+
+          <p class="sg-kicker">Breakpoints</p>
+          <table>
+            <thead>
+              <tr><th>Width</th><th>Change</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>≤ 640&nbsp;px</td><td>nav collapses to a menu; sidenotes become tap targets</td></tr>
+              <tr><td>≤ 768&nbsp;px</td><td>article padding 0.33&nbsp;rem, title block tightens</td></tr>
+              <tr><td>≤ 800&nbsp;px</td><td>footer drops from five columns to two</td></tr>
+              <tr><td>≤ 1280&nbsp;px</td><td>contents rail hides; the column centres</td></tr>
+              <tr><td>≥ 1400&nbsp;px</td><td>shell 990&nbsp;px, sidenote 250&nbsp;px</td></tr>
+              <tr><td>≥ 1800&nbsp;px</td><td>shell 1030&nbsp;px, sidenote 300&nbsp;px</td></tr>
+            </tbody>
+          </table>
+
+          <!-- =============================== MOTION ============================== -->
+          <h2 id="motion" class="typography" data-typography="article-heading">Motion</h2>
+
+          <p class="typography" data-typography="article-body">Movement is almost invisible. The page fades in once; links shift colour; the contents dot slides; the header retreats when you scroll down. There are no reveals, no parallax, and no animation on scroll.</p>
+
+          <table>
+            <thead>
+              <tr><th>Element</th><th>Timing</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>page enter</td><td>fadeIn 0.6&nbsp;s ease-in-out</td></tr>
+              <tr><td>links</td><td>colour 0.3&nbsp;s, underline 0.3&nbsp;s</td></tr>
+              <tr><td>contents item</td><td>colour 0.2&nbsp;s, opacity 0.2&nbsp;s</td></tr>
+              <tr><td>contents dot</td><td>transform 0.28&nbsp;s cubic-bezier(.22,1,.36,1)</td></tr>
+              <tr><td>header hide</td><td>transform 0.22&nbsp;s, same curve</td></tr>
+              <tr><td>reduced motion</td><td>all of the above disabled</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ================================ RULES ============================= -->
+          <h2 id="rules" class="typography" data-typography="article-heading">Rules of the house</h2>
+
+          <ul class="sg-rules">
+            <li class="is-do"><b>Do</b><span>Keep prose serif and apparatus sans. The tension between the two is the design.</span></li>
+            <li class="is-do"><b>Do</b><span>Let space do the structuring. A 3.1&nbsp;rem gap above a section is stronger than a rule or a background.</span></li>
+            <li class="is-do"><b>Do</b><span>Use one hairline where a border would be tempting, and no border where a hairline is not needed.</span></li>
+            <li class="is-do"><b>Do</b><span>Put notes in the margin. Interrupting the column is cheaper than interrupting the sentence.</span></li>
+            <li class="is-dont"><b>Don't</b><span>Widen the reading column past 660&nbsp;px, or fill it with a two-column layout.</span></li>
+            <li class="is-dont"><b>Don't</b><span>Introduce rounded cards, shadows, gradients or coloured callouts. None exist in the system.</span></li>
+            <li class="is-dont"><b>Don't</b><span>Set a paragraph in the sans, or a caption in the serif.</span></li>
+            <li class="is-dont"><b>Don't</b><span>Colour headings or links. Accent belongs to figures and syntax.</span></li>
+            <li class="is-dont"><b>Don't</b><span>Bold a whole sentence. Bold is for the term being defined.</span></li>
+          </ul>
+
+          <p class="typography" data-typography="article-body">Everything above is driven by <code>tokens.css</code> and <code>theme.css</code>. The rendered essay, with all of these elements in use, is at <a href="index.html">index.html</a>.</p>
+
+        </article>
+      </div>
+
+      <div class="paginator">
+        <a href="index.html">the essay</a>
+        <a href="#top">back to top</a>
+        <a href="README.md">readme</a>
+      </div>
+    </main>
+
+    <footer id="footer">
+      <div class="footer-columns">
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Specimen</h4>
+            <ul>
+              <li><a href="#type"><span class="typography" data-typography="body-legacy">Typography</span></a></li>
+              <li><a href="#colour"><span class="typography" data-typography="body-legacy">Colour</span></a></li>
+              <li><a href="#tables"><span class="typography" data-typography="body-legacy">Tables</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Files</h4>
+            <ul>
+              <li><a href="index.html"><span class="typography" data-typography="body-legacy">Rendered essay</span></a></li>
+              <li><a href="template.html"><span class="typography" data-typography="body-legacy">Template</span></a></li>
+              <li><a href="content.example.json"><span class="typography" data-typography="body-legacy">Content JSON</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">System</h4>
+            <ul>
+              <li><a href="tokens.json"><span class="typography" data-typography="body-legacy">tokens.json</span></a></li>
+              <li><a href="tokens.css"><span class="typography" data-typography="body-legacy">tokens.css</span></a></li>
+              <li><a href="theme.css"><span class="typography" data-typography="body-legacy">theme.css</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Source</h4>
+            <ul>
+              <li><a href="https://thinkingmachines.ai/blog/modular-manifolds/"><span class="typography" data-typography="body-legacy">Original essay</span></a></li>
+              <li><a href="source/page.html"><span class="typography" data-typography="body-legacy">Snapshotted HTML</span></a></li>
+              <li><a href="source/blog-post.css"><span class="typography" data-typography="body-legacy">Source CSS</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="typography" data-typography="body-legacy">Notes</h4>
+            <ul>
+              <li><a href="README.md"><span class="typography" data-typography="body-legacy">Design notes</span></a></li>
+              <li><a href="README.md#8-fidelity-notes"><span class="typography" data-typography="body-legacy">Fidelity</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <span class="typography" data-typography="body-legacy">Specimen set in Iowan Old Style, GT America and Chakra Petch</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // scroll-spy for the contents rail
+    (function () {
+      var nav = document.getElementById('left-toc');
+      if (!nav) return;
+      var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+      var heads = links
+        .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+        .filter(Boolean);
+      if (!heads.length) return;
+      function sync() {
+        var y = window.scrollY + 140;
+        var current = heads[0];
+        heads.forEach(function (h) { if (h.offsetTop <= y) current = h; });
+        links.forEach(function (a) {
+          var on = a.getAttribute('href') === '#' + current.id;
+          a.classList.toggle('is-active', on);
+          if (on) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+        var active = nav.querySelector('a.is-active');
+        if (active) {
+          nav.classList.add('has-active-marker');
+          nav.style.setProperty('--toc-active-marker-y', (active.offsetTop + active.offsetHeight / 2) + 'px');
+        }
+      }
+      sync();
+      window.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+    })();
+
+    // mobile menu
+    (function () {
+      var btn = document.querySelector('.hamburger');
+      var menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        btn.classList.toggle('is-active', !open);
+        menu.dataset.open = String(!open);
+      });
+    })();
+  </script>
+</body>
+</html>

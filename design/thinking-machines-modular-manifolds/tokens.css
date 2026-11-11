@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Thinking Machines Lab — blog post design tokens
+   Source: https://thinkingmachines.ai/blog/modular-manifolds/
+   Extracted from the page's inline <style> blocks + blog-post.min.css
+   Variable names mirror the originals so extracted markup keeps working.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Iowan Old Style BT";
+  src: url("../assets/fonts/iowan-old-style_regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Iowan Old Style BT";
+  src: url("../assets/fonts/iowan-old-style_bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GT America";
+  src: url("../assets/fonts/GT-America-Standard-Regular.latin.902b7d02c7347949.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Chakra Petch";
+  src: url("../assets/fonts/chakra-petch-v12-latin-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- brand palette -------------------------------------------- */
+  --brand-white: #ffffff;
+  --brand-off-white: #f3f3f2;
+  --brand-light-gray: #969696;
+  --brand-gray: #676767;
+  --brand-dark-gray: #282828;
+  --brand-black: #000000;
+  --brand-cobalt: #0155bf;
+  --brand-azure: #0387e7;
+  --brand-emerald: #0e9972;
+  --brand-lime: #9cc355;
+  --brand-yellow: #ffce52;
+  --brand-amber: #f7a224;
+  --brand-red: #ef402c;
+
+  /* ---------- surfaces ------------------------------------------------ */
+  --bg: #ffffff;
+  --bg_s: #ffffff;
+  --bg_h: #ffffff;
+  --bg_code: #f3f3f2;
+  --bg1: #ebdbb2;
+  --bg2: #d5c4a1;
+  --bg3: #bdae93;
+  --bg4: #a89984;
+
+  /* ---------- ink ----------------------------------------------------- */
+  --fg: #282828;
+  --fg1: #3c3836;
+  --fg2: #504945;
+  --fg3: #6b6866;
+  --fg4: #676767;
+  --fg5: #969696;
+  --fg_code: #64a24e;
+
+  /* ---------- accents ------------------------------------------------ */
+  --red: #ad2111;
+  --green: #9cc355;
+  --yellow: #b57614;
+  --blue: #0e9ee4;
+  --purple: #8f3f71;
+  --aqua: #427b58;
+  --orange: #af3a03;
+  --gray: #817d79;
+  --red-dim: #cc2412;
+  --green-dim: #98971a;
+  --yellow-dim: #d79921;
+  --blue-dim: #458598;
+  --purple-dim: #b16286;
+  --aqua-dim: #689d6a;
+  --orange-dim: #d65d0e;
+  --gray-dim: #817d79;
+
+  /* ---------- syntax highlighting ------------------------------------ */
+  --code-red: #cb071d;
+  --code-blue: #0277aa;
+  --code-green: #7eac21;
+  --code-magenta: #ae166b;
+  --code-comment: #6f7d8d;
+  --code-namespace: #6b1e3c;
+  --code-yellow: #a47d00;
+  --code-aqua: #1b8ea6;
+  --code-orange: #c44d5a;
+  --code-gray: #5f6672;
+  --code-purple: var(--code-blue);
+
+  /* ---------- interaction -------------------------------------------- */
+  --hover-bg: rgba(128, 128, 128, 0.12);
+  --selection-bg: rgba(0, 0, 0, 0.12);
+  --underline: color-mix(in srgb, var(--fg4) 30%, transparent);
+  --underline-strong: color-mix(in srgb, var(--fg2) 30%, transparent);
+  --rule: color-mix(in srgb, var(--fg4) 35%, var(--bg) 65%);
+  --rule-faint: color-mix(in srgb, var(--fg4) 20%, var(--bg) 80%);
+  --rule-table: #d9d9d9;
+
+  /* ---------- type families ------------------------------------------- */
+  --font-serif: "Iowan Old Style BT", Georgia, "Times New Roman", serif;
+  --font-sans: "GT America", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans-fallback: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "GT America Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  --font-logo: "Chakra Petch", "GT America", sans-serif;
+
+  /* ---------- type scale (px @ 16px root) ------------------------------ */
+  --type-article-title: 1.875rem;   /* 30px   / 600 / 1.4  */
+  --type-subtitle: 1.5rem;          /* 24px   / 400 italic */
+  --type-h2: 1.45rem;               /* 23.2px / 600 / 1.4  */
+  --type-h3: 1.35rem;               /* 21.6px / 400 italic */
+  --type-h4: 0.97rem;               /* 15.52px/ 400 italic */
+  --type-body: 1.0625rem;           /* 17px   / 400 / 1.6  */
+  --type-body-large: 1.25rem;       /* 20px                */
+  --type-caption: 13px;             /*        / 400 / 1.4  */
+  --type-meta: 15px;                /*        / 17px       */
+  --type-nav: 15px;
+  --type-footer: 0.9375rem;         /* 15px                */
+  --type-logo: 17px;
+  --type-code: 13px;
+
+  /* ---------- layout --------------------------------------------------- */
+  --content-pad: 1.3rem;
+  --content-width: 660px;
+  --content-max: calc(660px + 2 * var(--content-pad));
+  --post-max-width: 950px;
+  --title-max-width: 710px;
+  --cover-max-width: 800px;
+  --site-header-height: 54px;
+  --page-pad: 1rem;
+
+  /* ---------- rails ---------------------------------------------------- */
+  --toc-width: 210px;
+  --toc-gap: 34px;
+  --toc-gutter: 1.3rem;
+  --sidenote-width: 230px;
+  --sidenote-gap: 64px;
+
+  /* ---------- post rhythm ---------------------------------------------- */
+  --post-caption-font-size: 13px;
+  --post-caption-gap: 13px;
+  --post-block-padding-y: 0.75rem;
+  --post-code-block-padding-y: 0.2rem;
+  --post-formula-padding-y: 0.45rem;
+
+  /* ---------- radius / elevation / motion ------------------------------ */
+  --radius-code: 0.45rem;
+  --radius-video: 12px;
+  --radius-pill: 999px;
+  --radius-kbd: 0.2rem;
+  --shadow: none;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-link: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out;
+  --t-toc: color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  --t-fade: opacity 0.18s ease-in-out;
+}
+
+/* Post shell widens with the viewport; the reading column never does. */
+@media (min-width: 1200px) { :root { --post-max-width: 970px;  --sidenote-width: 240px; } }
+@media (min-width: 1400px) { :root { --post-max-width: 990px;  --sidenote-width: 250px; } }
+@media (min-width: 1600px) { :root { --post-max-width: 1010px; --sidenote-width: 275px; } }
+@media (min-width: 1800px) { :root { --post-max-width: 1030px; --sidenote-width: 300px; } }
